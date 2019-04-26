@@ -14,6 +14,14 @@ node {
       } else {
       bat(/"${mvnHome}\bin\mvn" test/)
       }
+      stage('Build') {
+     // Run the maven build
+     if (isUnix()) {
+        sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore  build"
+     } else {
+        bat(/"${mvnHome}\bin\mvn" -B -DskipTests -Dmaven.test.failure.ignore package/)
+     }
+  }
    }
    stage('Results') {
       junit '**/target/surefire-reports/TEST-*.xml'
